@@ -20,27 +20,36 @@ def joint_parse(xml_name, data_name):
                 records = re.finditer(node.get("start"), file)
                 records_list = list(records)
                 length = len(records_list)
-
                 for i in range(length):
+                    if node.get("group"):
+                        name = records_list[i].group(int(node.get("group")))
+                    else:
+                        name = records_list[i].group()
+
                     if node.get("name") in current_dict:
                         if i + 1 < length:
                             current_dict[node.get("name")].update(
-                                {records_list[i].group(): parse_tree(node, file[records_list[i].start():records_list[i + 1].end()])})
+                                {name: parse_tree(node, file[records_list[i].start():records_list[i + 1].end()])})
                         else:
                             current_dict[node.get("name")].update(
-                                {records_list[i].group(): parse_tree(node, file[records_list[i].start():len(file)])})
+                                {name: parse_tree(node, file[records_list[i].start():len(file)])})
                     else:
                         if i + 1 < length:
-                            current_dict[node.get("name")] = {records_list[i].group(): parse_tree(node, file[records_list[i].start():records_list[i + 1].end()])}
+                            current_dict[node.get("name")] = {name: parse_tree(node, file[records_list[i].start():records_list[i + 1].end()])}
                         else:
-                            current_dict[node.get("name")] = {records_list[i].group(): parse_tree(node, file[records_list[i].start():len(file)])}
+                            current_dict[node.get("name")] = {name: parse_tree(node, file[records_list[i].start():len(file)])}
             else:
                 match = re.search(node.text, file)
 
-                if current_dict:
-                    current_dict.update({node.get("name"): match.group()})
+                if node.get("group"):
+                    value = match.group(int(node.get("group")))
                 else:
-                    current_dict = {node.get("name"): match.group()}
+                    value = match.group()
+
+                if current_dict:
+                    current_dict.update({node.get("name"): value})
+                else:
+                    current_dict = {node.get("name"): value}
         return current_dict
 
     # Load the XML file

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <template>
     <container name="consent_agenda" start="\nCONSENT AGENDA\n\n" end="\nREGULAR AGENDA\n\n">
-        <record name="committee" start="Recommendation.*|Recommendations.*">
-            <record name="recommendation" start="\n\d+\n\n">
-                <element name="id">\n\d+\n\n</element>
-                <element name="title">\n\[[^\]]+]\n</element>
+        <record name="committee" start="(Recommendation of the |Recommendations of the )(.*)" group="2">
+            <record name="recommendation" start="(\n)(\d+)(\n\n)" group="2">
+                <element name="id" group="2">(\n)(\d+)(\n\n)</element>
+                <element name="title" group="2">(\n\[)([^\]]+)(]\n)</element>
             </record>
         </record>
     </container>

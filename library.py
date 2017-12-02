@@ -37,10 +37,10 @@ def joint_parse(xml_name, data_name):
             else:
                 match = re.search(node.text, file)
 
-                if node.tag in current_dict:
-                    current_dict[node.tag].update({node.get("name"): match.group()})
+                if current_dict:
+                    current_dict.update({node.get("name"): match.group()})
                 else:
-                    current_dict[node.tag] = {node.get("name"): match.group()}
+                    current_dict = {node.get("name"): match.group()}
         return current_dict
 
     # Load the XML file

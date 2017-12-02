@@ -1,9 +1,5 @@
 # Testing out some functions that will be refactored later
 
-import json
+import re
 
-test = {"a": "b"}
-
-test.update({"c": "d"})
-
-print(test)
+print(int(re.DOTALL))

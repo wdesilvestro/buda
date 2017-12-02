@@ -39,7 +39,10 @@ def joint_parse(xml_name, data_name):
                         else:
                             current_dict[node.get("name")] = {name: parse_tree(node, file[records_list[i].start():len(file)])}
             else:
-                match = re.search(node.text, file)
+                if node.get("dotall"):
+                    match = re.search(node.text, file, flags=16)
+                else:
+                    match = re.search(node.text, file)
 
                 if node.get("group"):
                     value = match.group(int(node.get("group")))

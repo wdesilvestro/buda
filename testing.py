@@ -1,5 +1,5 @@
 # Testing out some functions that will be refactored later
 
-import re
+import library
 
-print(int(re.DOTALL))
+library.parse_directory("input", "output", "template.xml")

@@ -5,7 +5,8 @@
             <record name="recommendation" start="(\n)(\d+)(\n\n)" group="2">
                 <element name="id" group="2">(\n)(\d+)(\n\n)</element>
                 <element name="title" group="2">(\n\[)([^\]]+)(]\n)</element>
-                <element name="description" group="2" dotall="dotall">(\n\[[^\]]+]\n)(.+?)(\s[A-Z\s]+\s)</element>
+                <element name="description" group="2" dotall="dotall">(\n\[[^\]]+]\n)(.+?)\n([A-Z\s]+)\s</element>
+                <element name="vote" group="3" dotall="dotall">(\n\[[^\]]+]\n)(.+?)\n([A-Z\s]+)\s</element>
             </record>
         </record>
     </container>

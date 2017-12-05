@@ -2,6 +2,8 @@
 
 import xml.etree.ElementTree as ET
 import re
+import os
+import json
 
 
 def joint_parse(xml_name, data_name):
@@ -68,3 +70,47 @@ def joint_parse(xml_name, data_name):
     result = parse_tree(nodes, data)
     file_object.close()
     return result
+
+
+def parse_individual(template_dir, in_dir, out_dir):
+    # Locate all the .txt files in the input directory
+    # Citation: https://stackoverflow.com/questions/3964681/find-all-files-in-a-directory-with-extension-txt-in-python
+    files = []
+    for file in os.listdir(in_dir):
+        if file.endswith(".txt"):
+            files.append(os.path.join(in_dir, file))
+
+    # Convert each file to a .txt in the output directory
+    for fdir in files:
+        result = joint_parse(template_dir, fdir)
+        output = open(out_dir + "/" + fdir[(len(in_dir) + 1):(len(fdir) - 4)] + ".json", "w")
+        output.write(json.dumps(result))
+        output.close()
+
+
+# Citation: https://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
+def merge_dict(d1, d2):
+    for k, v2 in d2.items():
+        v1 = d1.get(k)
+        if (isinstance(v1, dict) and
+                isinstance(v2, dict)):
+            merge_dict(v1, v2)
+        else:
+            d1[k] = v2
+
+
+def parse_aggregate(template_dir, in_dir, out_dir):
+    files = []
+    for file in os.listdir(in_dir):
+        if file.endswith(".txt"):
+            files.append(os.path.join(in_dir, file))
+
+    # Convert each file to a .txt in the output directory
+    # pdf2txt.extract_text(files, "/output")
+    result = {}
+    for fdir in files:
+        merge_dict(result, joint_parse(template_dir, fdir))
+
+    output = open(out_dir + "/" + "aggregate.json", "w")
+    output.write(json.dumps(result))
+    output.close()

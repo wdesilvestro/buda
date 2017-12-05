@@ -16,6 +16,6 @@ args = parser.parse_args()
 
 # Access library and run appropriate functions
 if args.aggregate:
-    lib.parse_aggregate(args.template_dir, args.in_dir, args.out_dir)
+    lib.parse_directory(args.template_dir, args.in_dir, args.out_dir, True)
 else:
-    lib.parse_individual(args.template_dir, args.in_dir, args.out_dir)
+    lib.parse_directory(args.template_dir, args.in_dir, args.out_dir, False)

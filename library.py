@@ -17,7 +17,7 @@ def joint_parse(xml_name, data_name):
                 if node.get("name") in current_dict:
                     current_dict[node.get("name")].update({node.get("name"): parse_tree(node, file[match_start:match_end])})
                 else:
-                    current_dict[node.get("name")] = {node.get("name"): parse_tree(node, file[match_start:match_end])}
+                    current_dict[node.get("name")] = parse_tree(node, file[match_start:match_end])
             elif node.tag == "record":
                 records = re.finditer(node.get("start"), file)
                 records_list = list(records)
@@ -72,22 +72,6 @@ def joint_parse(xml_name, data_name):
     return result
 
 
-def parse_individual(template_dir, in_dir, out_dir):
-    # Locate all the .txt files in the input directory
-    # Citation: https://stackoverflow.com/questions/3964681/find-all-files-in-a-directory-with-extension-txt-in-python
-    files = []
-    for file in os.listdir(in_dir):
-        if file.endswith(".txt"):
-            files.append(os.path.join(in_dir, file))
-
-    # Convert each file to a .txt in the output directory
-    for fdir in files:
-        result = joint_parse(template_dir, fdir)
-        output = open(out_dir + "/" + fdir[(len(in_dir) + 1):(len(fdir) - 4)] + ".json", "w")
-        output.write(json.dumps(result))
-        output.close()
-
-
 # Citation: https://stackoverflow.com/questions/10703858/python-merge-multi-level-dictionaries
 def merge_dict(d1, d2):
     for k, v2 in d2.items():
@@ -99,14 +83,31 @@ def merge_dict(d1, d2):
             d1[k] = v2
 
 
-def parse_aggregate(template_dir, in_dir, out_dir):
+def parse_directory(template_dir, in_dir, out_dir, mode):
+    # Locate all the .txt files in the input directory
+    # Citation: https://stackoverflow.com/questions/3964681/find-all-files-in-a-directory-with-extension-txt-in-python
     files = []
     for file in os.listdir(in_dir):
         if file.endswith(".txt"):
             files.append(os.path.join(in_dir, file))
 
+    if mode:
+        parse_aggregate(files, template_dir, out_dir)
+    else:
+        parse_individual(files, template_dir, in_dir, out_dir)
+
+
+def parse_individual(files, template_dir, in_dir, out_dir):
     # Convert each file to a .txt in the output directory
-    # pdf2txt.extract_text(files, "/output")
+    for fdir in files:
+        result = joint_parse(template_dir, fdir)
+        output = open(out_dir + "/" + fdir[(len(in_dir) + 1):(len(fdir) - 4)] + ".json", "w")
+        output.write(json.dumps(result))
+        output.close()
+
+
+def parse_aggregate(files, template_dir, out_dir):
+    # Convert each file to a .txt in the output directory
     result = {}
     for fdir in files:
         merge_dict(result, joint_parse(template_dir, fdir))

@@ -87,7 +87,7 @@ def joint_parse(template_dir, file_dir):
                     container_start = re.search(node.get("start"), data, flags=flags).start()
                     container_end = re.search(node.get("end"), data, flags=flags).end()
                 except AttributeError:
-                    print(printColors.ERROR + "Error: A file ('" + file_dir + "') does not match the XML template  "
+                    print(printColors.ERROR + "Error: A file ('" + file_dir + "') does not match the XML template "
                           "provided. Double check the file's structure and the XML template."
                           + printColors.END_FORMATTING)
                     sys.exit(1)

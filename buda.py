@@ -1,16 +1,20 @@
-# Testing out some functions that will be refactored later
+"""
+BUDA's Main File
 
-import library as lib
+This file is a command line wrapper for BUDA's library.
+"""
+
 import argparse
+import library as lib
 
 
-# Parse command-line arguments
-parser = argparse.ArgumentParser(description="A command-line utility to programmatically parse .txt files with XML templates.")
+# Handle command line arguments
+parser = argparse.ArgumentParser(description="A command-line utility to programmatically parse .txt files with XML"
+                                             "templates.")
 parser.add_argument('template_dir', action="store")
 parser.add_argument('in_dir', action="store")
 parser.add_argument('out_dir', action="store")
 parser.add_argument('-a', action="store_true", dest="aggregate")
-
 args = parser.parse_args()
 
 

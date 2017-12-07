@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<template>
+    <container name="formal_hearings" start="\nFORMAL HEARINGS\n" end="\nINFORMAL HEARINGS\n">
+        <record name="hearing" start="\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))|\b((1[0-2]|0?[1-9]): ([0-5][0-9]) ([AaPp][Mm]))">
+            <element name="time">\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))|\b((1[0-2]|0?[1-9]): ([0-5][0-9]) ([AaPp][Mm]))</element>
+            <element name="address" group="10">(\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))|\b((1[0-2]|0?[1-9]): ([0-5][0-9]) ([AaPp][Mm])))(\n.+?(:))</element>
+            <element name="description" group="12" flags="re.DOTALL">(\b((1[0-2]|0?[1-9]):([0-5][0-9]) ([AaPp][Mm]))|\b((1[0-2]|0?[1-9]): ([0-5][0-9]) ([AaPp][Mm])))(\n.+?(:))(.+)</element>
+        </record>
+    </container>
+</template>

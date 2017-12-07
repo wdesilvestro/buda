@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<template>
+    <container name="consent_agenda" start="\nCONSENT AGENDA\n\n" end="\nREGULAR AGENDA\n\n">
+        <record name="committee" start="(Recommendation of the |Recommendations of the )(.*)" group="2">
+            <record name="recommendation" start="(\n)(\d+)(\n\n)" group="2">
+                <element name="id" group="2">(\n)(\d+)(\n\n)</element>
+                <element name="title" group="2">(\n\[)([^\]]+)(]\n)</element>
+                <element name="description" group="2" flags="re.DOTALL">(\n\[[^\]]+]\n)(.+?)\n([A-Z\s]+)\s</element>
+                <element name="vote" group="3" flags="re.DOTALL">(\n\[[^\]]+]\n)(.+?)\n([A-Z\s]+)\s</element>
+            </record>
+        </record>
+    </container>
+</template>
